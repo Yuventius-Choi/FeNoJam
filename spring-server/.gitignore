@@ -1,0 +1,57 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Spring Boot
+*.pid
+*.seed
+*.pid.lock
+
+# Application local config
+application-local.yml
+application-secret.yml
+.env
+
+# Kotlin
+.kotlin/
+
+# Generated files
+generated/
+bin/
+
+# Docker
+docker-data/
+*.tar
+
+# Database
+*.db
+*.sqlite
+
+# Test
+coverage/
+test-output/
+
+# OS generated
+Thumbs.db
+
+# JDK
+hs_err_pid*
+replay_pid*

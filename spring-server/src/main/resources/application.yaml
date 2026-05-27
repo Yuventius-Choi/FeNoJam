@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: fe_no_jam

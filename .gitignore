@@ -1,0 +1,34 @@
+# Docker Volume
+mariadb_data/
+
+# AI model
+models/
+checkpoints/
+*.pth
+*.pt
+*.onnx
+
+# Firebase
+google-services.json
+GoogleService-Info.plist
+
+# Secrets
+secrets/
+*.pem
+*.key
+
+# Environments
+*.env
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
