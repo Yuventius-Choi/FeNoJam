@@ -25,3 +25,13 @@ data class BaseResponse<T>(
         }
     }
 }
+
+object BaseResponseCode {
+    const val OK = 200
+    const val BAD_REQUEST = 400
+    const val INTERNAL_SERVER_ERROR = 500
+
+    // Custom Error codes
+    const val INVALID_PARAMETER = 4001
+    const val INVALID_FILE = 4002
+}
