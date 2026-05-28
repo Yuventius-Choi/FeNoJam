@@ -1,3 +1,6 @@
 spring:
   application:
     name: fe_no_jam
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    initialization-mode: always
