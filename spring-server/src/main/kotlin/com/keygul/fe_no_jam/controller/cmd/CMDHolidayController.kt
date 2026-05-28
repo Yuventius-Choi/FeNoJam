@@ -17,20 +17,24 @@ class CMDHolidayController (
     private val apiService: ApiService,
     private val holidayService: HolidayService
 ) {
-    @GetMapping
-    suspend fun getHolidays(
-        @RequestParam pageNo: Int,
-        @RequestParam numOfRows: Int,
-        @RequestParam year: String,
-        @RequestParam(required = false) month: String?
-        ): BaseResponse<List<Holiday>> {
-        val response = apiService.getHolidays(
-            year = year,
-            month = month,
-            pageNo = pageNo,
-            numOfRows = numOfRows
-        )
-        val result = holidayService.insertHolidays(response.toHolidayList())
-        return BaseResponse.ok(result)
-    }
+
+    /**
+     * XML 혐오증 걸려서 일단 보류
+     */
+//    @GetMapping
+//    suspend fun getHolidays(
+//        @RequestParam pageNo: Int,
+//        @RequestParam numOfRows: Int,
+//        @RequestParam year: String,
+//        @RequestParam(required = false) month: String?
+//        ): BaseResponse<List<Holiday>> {
+//        val response = apiService.getHolidays(
+//            year = year,
+//            month = month,
+//            pageNo = pageNo,
+//            numOfRows = numOfRows
+//        )
+//        val result = holidayService.insertHolidays(response.toHolidayList())
+//        return BaseResponse.ok(result)
+//    }
 }
