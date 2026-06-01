@@ -1,0 +1,106 @@
+# Built application files
+*.apk
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+build/
+app/build/
+
+# Gradle
+.gradle/
+local.properties
+
+# Android Studio
+.idea/
+*.iml
+
+# Keystore files
+*.jks
+*.keystore
+
+# Log Files
+*.log
+
+# Android Navigation editor temp files
+.navigation/
+
+# Android Studio captures
+captures/
+
+# External native build
+.externalNativeBuild/
+.cxx/
+
+# Google Services
+google-services.json
+
+# Firebase App Distribution
+firebase_app_distribution.xml
+
+# Secrets
+secrets.properties
+apikey.properties
+.env
+
+# Kotlin
+.kotlin/
+
+# KSP
+.ksp/
+
+# Annotation processors
+generated/
+
+# NDK
+obj/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# IntelliJ
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/caches/
+.idea/shelf/
+## private config
+# .idea/modules.xml
+# .idea/libraries/
+
+# Android Studio generated files
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/deploymentTargetSelector.xml
+
+# Test outputs
+test-results/
+coverage/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Crashlytics
+com_crashlytics_export_strings.xml
+
+# Room
+schemas/
+
+# Hilt
+aggregated_deps/
+
+# Compose Preview
+.idea/render.experimental.xml
