@@ -42,7 +42,9 @@ class MapVM (
         val jsonParser = Json { ignoreUnknownKeys = true }
         val response = jsonParser.decodeFromString<FestMapDto>(jsonString)
 
-        val result: List<FestMap> = FestMapMapper.toDomain(response)
+        val result: List<FestMap> = FestMapMapper.toDomain(response).map {
+            it.copy(festHeatPoints = it.festPlace.generateCircularHeatPoints())
+        }
 
         reduce {
             state.copy(festMaps = result)
