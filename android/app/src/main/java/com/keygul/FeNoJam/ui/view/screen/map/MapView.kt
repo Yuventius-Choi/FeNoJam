@@ -60,7 +60,8 @@ fun MapView (
     val koreaCenterPos = LatLng(37.5, 127.5)
     val mapProperties = MapProperties(
         latLngBoundsForCameraTarget = koreaBounds,
-        minZoomPreference = 6F
+        minZoomPreference = 6F,
+        maxZoomPreference = 14F
     )
     val uiSettings by remember {
         mutableStateOf(MapUiSettings(
@@ -126,7 +127,7 @@ fun MapView (
                             cameraPositionState.animate(
                                 update = CameraUpdateFactory.newLatLngZoom(
                                     marker.position,
-                                    map?.let { 15F } ?: run { 8F }
+                                    map?.let { 14F } ?: run { 8F }
                                 ),
                                 durationMs = 1000
                             )

@@ -8,7 +8,8 @@
       "address": "서울특별시 중구 세종대로 110",
       "stDate": "2026-06-01T18:00:00",
       "enDate": "2026-06-03T23:00:00",
-      "thumbnail": "https://images.unsplash.com/photo-1511578314322-379afb476865"
+      "thumbnail": "https://images.unsplash.com/photo-1511578314322-379afb476865",
+      "weight": 0.94
     },
     {
       "id": 2,
@@ -18,7 +19,8 @@
       "address": "부산광역시 해운대구 우동",
       "stDate": "2026-06-05T12:00:00",
       "enDate": "2026-06-07T22:00:00",
-      "thumbnail": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f"
+      "thumbnail": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f",
+      "weight": 0.82
     },
     {
       "id": 3,
@@ -28,7 +30,8 @@
       "address": "전라북도 전주시 완산구 기린대로",
       "stDate": "2026-06-10T17:00:00",
       "enDate": "2026-06-12T23:00:00",
-      "thumbnail": "https://images.unsplash.com/photo-1505236858219-8359eb29e329"
+      "thumbnail": "https://images.unsplash.com/photo-1505236858219-8359eb29e329",
+      "weight": 0.71
     },
     {
       "id": 4,
@@ -38,7 +41,8 @@
       "address": "강원특별자치도 강릉시 창해로",
       "stDate": "2026-06-15T10:00:00",
       "enDate": "2026-06-17T20:00:00",
-      "thumbnail": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"
+      "thumbnail": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
+      "weight": 0.99
     },
     {
       "id": 5,
@@ -48,7 +52,8 @@
       "address": "제주특별자치도 제주시",
       "stDate": "2026-06-20T09:00:00",
       "enDate": "2026-06-22T22:00:00",
-      "thumbnail": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+      "thumbnail": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      "weight": 0.46
     }
   ],
   "heatmaps": {
@@ -57,22 +62,7 @@
       { "lat": 37.5668, "lng": 126.9785, "weight": 0.98 },
       { "lat": 37.5658, "lng": 126.9771, "weight": 0.96 },
       { "lat": 37.5672, "lng": 126.9791, "weight": 0.94 },
-      { "lat": 37.5654, "lng": 126.9787, "weight": 0.92 },
-      { "lat": 37.5675, "lng": 126.9768, "weight": 0.90 },
-      { "lat": 37.5661, "lng": 126.9795, "weight": 0.88 },
-      { "lat": 37.5651, "lng": 126.9765, "weight": 0.86 },
-      { "lat": 37.5678, "lng": 126.9782, "weight": 0.84 },
-      { "lat": 37.5649, "lng": 126.9780, "weight": 0.82 },
-      { "lat": 37.5666, "lng": 126.9759, "weight": 0.80 },
-      { "lat": 37.5680, "lng": 126.9770, "weight": 0.78 },
-      { "lat": 37.5648, "lng": 126.9790, "weight": 0.76 },
-      { "lat": 37.5669, "lng": 126.9800, "weight": 0.74 },
-      { "lat": 37.5657, "lng": 126.9758, "weight": 0.72 },
-      { "lat": 37.5674, "lng": 126.9802, "weight": 0.70 },
-      { "lat": 37.5646, "lng": 126.9773, "weight": 0.68 },
-      { "lat": 37.5660, "lng": 126.9760, "weight": 0.66 },
-      { "lat": 37.5682, "lng": 126.9788, "weight": 0.64 },
-      { "lat": 37.5650, "lng": 126.9801, "weight": 0.62 }
+      { "lat": 37.5654, "lng": 126.9787, "weight": 0.92 }
     ],
     "2": [
       { "lat": 35.1587, "lng": 129.1604, "weight": 1.0 },
