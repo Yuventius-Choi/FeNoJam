@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.maps)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -31,11 +35,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -55,4 +60,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
+    implementation(libs.bundles.orbit)
+    implementation(libs.bundles.coil)
+    implementation(libs.bundles.google.map)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.serialization.json)
 }
