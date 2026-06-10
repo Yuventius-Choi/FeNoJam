@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.time.LocalDate
 
 class MapVM (
     savedStateHandle: SavedStateHandle
@@ -25,6 +26,9 @@ class MapVM (
                 is MapEvent.SelectPlace -> {
                     selectPlace(event.place)
                 }
+                is MapEvent.SelectDate -> {
+                    selectDate(event.date)
+                }
             }
         }
     }
@@ -35,6 +39,12 @@ class MapVM (
                 selectedFestPlace = festPlace,
                 selectedDate = festPlace?.weights[0]?.date
             )
+        }
+    }
+
+    private fun selectDate(date: LocalDate) = intent {
+        reduce {
+            state.copy(selectedDate = date)
         }
     }
 

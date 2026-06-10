@@ -2,10 +2,14 @@ package com.keygul.FeNoJam.ui.view.screen.map
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +37,7 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
 import com.keygul.FeNoJam.domain.model.FestPlace
 import com.keygul.FeNoJam.domain.model.FestWeightDaily
+import com.keygul.FeNoJam.ui.view.components.DateChips
 import com.keygul.FeNoJam.ui.view.components.PlaceCardView
 import com.keygul.FeNoJam.utils.exts.getFestAsset
 import kotlinx.coroutines.launch
@@ -81,7 +86,8 @@ fun MapView (
             .fillMaxSize()
     ) {
         GoogleMap (
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize(),
             cameraPositionState = cameraPositionState,
             uiSettings = uiSettings,
             properties = mapProperties,
@@ -156,6 +162,23 @@ fun MapView (
             }
         }
         state.selectedFestPlace?.let { place ->
+            // 상단 Date
+            state.selectedDate?.let { currentDate ->
+                DateChips (
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter),
+                    items = place.weights.map { it.date },
+                    currentDate = currentDate
+                ) {
+                    vm.onEvent (
+                        MapEvent.SelectDate(it)
+                    )
+                }
+            }
+
+            // 하단 CardView
             PlaceCardView (
                 modifier = Modifier
                     .align(Alignment.BottomCenter)

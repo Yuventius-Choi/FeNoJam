@@ -14,7 +14,7 @@ sealed class MapEvent {
         val jsonString: String
     ): MapEvent()
     data class SelectPlace(val place: FestPlace? = null): MapEvent()
-
+    data class SelectDate(val date: LocalDate): MapEvent()
 }
 
 sealed class MapSideEffect {
