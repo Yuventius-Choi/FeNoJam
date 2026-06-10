@@ -3,9 +3,8 @@ package com.keygul.FeNoJam.ui.view.screen.map
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.keygul.FeNoJam.data.model.FestMapDto
-import com.keygul.FeNoJam.data.model.FestMapMapper
-import com.keygul.FeNoJam.domain.model.FestMap
+import com.keygul.FeNoJam.data.model.FestPlaceDto
+import com.keygul.FeNoJam.data.model.FestPlaceMapper
 import com.keygul.FeNoJam.domain.model.FestPlace
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -30,9 +29,12 @@ class MapVM (
         }
     }
 
-    private fun selectPlace(festMap: FestMap?) = intent {
+    private fun selectPlace(festPlace: FestPlace?) = intent {
         reduce {
-            state.copy(selectedFestMap = festMap)
+            state.copy(
+                selectedFestPlace = festPlace,
+                selectedDate = festPlace?.weights[0]?.date
+            )
         }
     }
 
@@ -40,14 +42,14 @@ class MapVM (
         jsonString: String
     ) = intent {
         val jsonParser = Json { ignoreUnknownKeys = true }
-        val response = jsonParser.decodeFromString<FestMapDto>(jsonString)
+        val response = jsonParser.decodeFromString<List<FestPlaceDto>>(jsonString)
 
-        val result: List<FestMap> = FestMapMapper.toDomain(response).map {
-            it.copy(festHeatPoints = it.festPlace.generateCircularHeatPoints())
+        val result: List<FestPlace> = response.map {
+            FestPlaceMapper.toDomain(it)
         }
 
         reduce {
-            state.copy(festMaps = result)
+            state.copy(festPlaces = result)
         }
 
         postSideEffect(MapSideEffect.Toast(msg = "데이터 로드 완료"))

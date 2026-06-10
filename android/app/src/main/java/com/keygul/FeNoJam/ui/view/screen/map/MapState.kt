@@ -1,17 +1,19 @@
 package com.keygul.FeNoJam.ui.view.screen.map
 
-import com.keygul.FeNoJam.domain.model.FestMap
+import com.keygul.FeNoJam.domain.model.FestPlace
+import java.time.LocalDate
 
 data class MapState (
-    val festMaps: List<FestMap> = emptyList(),
-    val selectedFestMap: FestMap? = null
+    val festPlaces: List<FestPlace> = emptyList(),
+    val selectedFestPlace: FestPlace? = null,
+    val selectedDate: LocalDate? = null
 )
 
 sealed class MapEvent {
     data class LoadSamples (
         val jsonString: String
     ): MapEvent()
-    data class SelectPlace(val place: FestMap? = null): MapEvent()
+    data class SelectPlace(val place: FestPlace? = null): MapEvent()
 
 }
 

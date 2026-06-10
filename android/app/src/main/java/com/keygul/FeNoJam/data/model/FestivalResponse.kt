@@ -2,16 +2,13 @@ package com.keygul.FeNoJam.data.model
 
 import com.keygul.FeNoJam.data.BaseMapper
 import com.keygul.FeNoJam.domain.model.FestHeatPoint
-import com.keygul.FeNoJam.domain.model.FestMap
 import com.keygul.FeNoJam.domain.model.FestPlace
+import com.keygul.FeNoJam.domain.model.FestTraffic
+import com.keygul.FeNoJam.domain.model.FestTrafficItem
+import com.keygul.FeNoJam.domain.model.FestWeightDaily
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
 import java.time.LocalDateTime
-
-@Serializable
-data class FestMapDto (
-    val festivals: List<FestPlaceDto>,
-    val heatmaps: Map<String, List<FestHeatPointDto>>
-)
 
 @Serializable
 data class FestPlaceDto (
@@ -22,31 +19,28 @@ data class FestPlaceDto (
     val address: String,
     val stDate: String,
     val enDate: String,
-    val thumbnail: String? = null
+    val thumbnail: String? = null,
+    val weights: List<FestWeightDto>,
+    val traffics: List<FestTrafficDto>
 )
 
 @Serializable
-data class FestHeatPointDto (
-    val lat: Double,
-    val lng: Double,
+data class FestWeightDto (
+    val date: String,
     val weight: Double
 )
 
-object FestMapMapper: BaseMapper<List<FestMap>, FestMapDto> {
-    override fun toDomain(data: FestMapDto): List<FestMap> {
-        return data.festivals.map { festival ->
-            val heatPointDtos: List<FestHeatPointDto> = data.heatmaps[festival.id.toString()]!!
-            FestMap (
-                festPlace = FestPlaceMapper.toDomain(festival),
-                festHeatPoints = heatPointDtos.map {
-                    FestHeatPointMapper.toDomain(it)
-                }
-            )
-        }
-    }
+@Serializable
+data class FestTrafficDto (
+    val date: String,
+    val weights: List<FestTrafficItemDto>
+)
 
-    override fun toData(domain: List<FestMap>): FestMapDto? = null
-}
+@Serializable
+data class FestTrafficItemDto (
+    val datetime: String,
+    val weight: Double
+)
 
 object FestPlaceMapper: BaseMapper<FestPlace, FestPlaceDto> {
     override fun toDomain(data: FestPlaceDto): FestPlace = FestPlace (
@@ -57,18 +51,42 @@ object FestPlaceMapper: BaseMapper<FestPlace, FestPlaceDto> {
         address = data.address,
         stDate = LocalDateTime.parse(data.stDate),
         enDate = LocalDateTime.parse(data.enDate),
-        thumbnail = data.thumbnail
+        thumbnail = data.thumbnail,
+        weights = data.weights.map {
+            val temp = FestWeightMapper.toDomain(it)
+            temp.copy(
+                heatPoints = temp.generateCircularHeatPoints(data.lat, data.lng)
+            )
+        },
+        traffics = data.traffics.map { FestTrafficMapper.toDomain(it) }
     )
 
     override fun toData(domain: FestPlace): FestPlaceDto? = null
 }
 
-object FestHeatPointMapper: BaseMapper<FestHeatPoint, FestHeatPointDto> {
-    override fun toDomain(data: FestHeatPointDto): FestHeatPoint = FestHeatPoint (
-        lat = data.lat,
-        lng = data.lng,
+object FestWeightMapper: BaseMapper<FestWeightDaily, FestWeightDto> {
+    override fun toDomain(data: FestWeightDto): FestWeightDaily = FestWeightDaily (
+        date = LocalDate.parse(data.date),
         weight = data.weight
     )
 
-    override fun toData(domain: FestHeatPoint): FestHeatPointDto? = null
+    override fun toData(domain: FestWeightDaily): FestWeightDto? = null
+}
+
+object FestTrafficMapper: BaseMapper<FestTraffic, FestTrafficDto> {
+    override fun toDomain(data: FestTrafficDto): FestTraffic = FestTraffic (
+        date = LocalDate.parse(data.date),
+        items = data.weights.map { FestTrafficItemMapper.toDomain(it) }
+    )
+
+    override fun toData(domain: FestTraffic): FestTrafficDto? = null
+}
+
+object FestTrafficItemMapper: BaseMapper<FestTrafficItem, FestTrafficItemDto> {
+    override fun toDomain(data: FestTrafficItemDto): FestTrafficItem = FestTrafficItem (
+        datetime = LocalDateTime.parse(data.datetime),
+        weight = data.weight
+    )
+
+    override fun toData(domain: FestTrafficItem): FestTrafficItemDto? = null
 }
