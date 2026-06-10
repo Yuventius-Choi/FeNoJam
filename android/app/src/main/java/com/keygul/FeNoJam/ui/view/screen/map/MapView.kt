@@ -1,13 +1,16 @@
 package com.keygul.FeNoJam.ui.view.screen.map
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,9 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -30,19 +31,20 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.TileOverlay
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.maps.android.compose.rememberMarkerState
 import com.google.maps.android.compose.rememberUpdatedMarkerState
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
-import com.keygul.FeNoJam.domain.model.FestMap
+import com.keygul.FeNoJam.domain.model.FestPlace
+import com.keygul.FeNoJam.domain.model.FestWeightDaily
+import com.keygul.FeNoJam.ui.view.components.DateChips
 import com.keygul.FeNoJam.ui.view.components.PlaceCardView
 import com.keygul.FeNoJam.utils.exts.getFestAsset
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import java.time.LocalDate
 
 @Composable
 fun MapView (
@@ -85,7 +87,8 @@ fun MapView (
             .fillMaxSize()
     ) {
         GoogleMap (
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize(),
             cameraPositionState = cameraPositionState,
             uiSettings = uiSettings,
             properties = mapProperties,
@@ -98,36 +101,36 @@ fun MapView (
                 )
             }
         ) {
-            state.festMaps.forEach { map ->
+            state.festPlaces.forEach { place ->
                 val markerState = rememberUpdatedMarkerState(
                     position = LatLng(
-                        map.festPlace.lat,
-                        map.festPlace.lng,
+                        place.lat,
+                        place.lng,
                     )
                 )
                 Marker(
                     state = markerState,
                     icon = BitmapDescriptorFactory.defaultMarker (
-                        if (state.selectedFestMap == map) {
+                        if (state.selectedFestPlace == place) {
                             BitmapDescriptorFactory.HUE_RED
                         } else {
                             BitmapDescriptorFactory.HUE_GREEN
                         }
                     ),
                     onClick = { marker ->
-                        val map: FestMap? = if (state.selectedFestMap == map) {
+                        val place: FestPlace? = if (state.selectedFestPlace == place) {
                             null
                         } else {
-                            map
+                            place
                         }
                         vm.onEvent (
-                            MapEvent.SelectPlace (map)
+                            MapEvent.SelectPlace(place)
                         )
                         coroutineScope.launch {
                             cameraPositionState.animate(
                                 update = CameraUpdateFactory.newLatLngZoom(
                                     marker.position,
-                                    map?.let { 14F } ?: run { 8F }
+                                    place?.let { 14F } ?: run { 8F }
                                 ),
                                 durationMs = 1000
                             )
@@ -136,14 +139,17 @@ fun MapView (
                     }
                 )
             }
-            state.selectedFestMap?.let {
-                val data: List<WeightedLatLng> = it.festHeatPoints.map { heatPoint ->
+            state.selectedFestPlace?.let { place ->
+                val currentDate: LocalDate = state.selectedDate ?: place.weights[0].date
+                val weight: FestWeightDaily = place.weights.first { it.date == currentDate }
+                
+                val data: List<WeightedLatLng> = weight.heatPoints.map { heatPoint ->
                     WeightedLatLng (
                         LatLng(heatPoint.lat, heatPoint.lng),
                         heatPoint.weight
                     )
                 }
-                val heatmapProvider = remember(it.festHeatPoints) {
+                val heatmapProvider = remember(weight.heatPoints) {
                     HeatmapTileProvider.Builder()
                         .weightedData(data)
                         .radius(50)
@@ -156,16 +162,34 @@ fun MapView (
                 )
             }
         }
-        state.selectedFestMap?.let { map ->
-            PlaceCardView (
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                festPlace = map.festPlace
-            )
+        state.selectedFestPlace?.let { place ->
+            state.selectedDate?.let { currentDate ->
+                // 상단 Date
+                DateChips (
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter),
+                    items = place.weights.map { it.date },
+                    currentDate = currentDate
+                ) {
+                    vm.onEvent (
+                        MapEvent.SelectDate(it)
+                    )
+                }
+
+                // 하단 CardView
+                PlaceCardView (
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    festPlace = place,
+                    selectedDate = currentDate
+                )
+            }
         }
-        if (state.festMaps.isEmpty()) {
+        if (state.festPlaces.isEmpty()) {
             Button (
                 modifier = Modifier
                     .align(Alignment.TopEnd)
