@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,37 +20,51 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.keygul.FeNoJam.domain.model.FestPlace
 import com.keygul.FeNoJam.utils.exts.format
+import java.time.LocalDate
 
 @Composable
 fun PlaceCardView (
     modifier: Modifier = Modifier,
-    festPlace: FestPlace = FestPlace()
+    festPlace: FestPlace = FestPlace(),
+    selectedDate: LocalDate = LocalDate.now(),
 ) {
     Card (
         modifier = modifier
     ) {
-        Row (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                .padding(8.dp)
         ) {
-            AsyncImage (
+            Row (
                 modifier = Modifier
-                    .size(50.dp),
-                model = festPlace.thumbnail,
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-            Column (
-                modifier = Modifier
-                    .weight(1F)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "이름:\t${festPlace.name}")
-                Text(text = "개최기간:\t${festPlace.stDate.format()} ~ ${festPlace.enDate.format()}")
-                Text(text = "주소:\t${festPlace.address}")
+                AsyncImage (
+                    modifier = Modifier
+                        .size(50.dp),
+                    model = festPlace.thumbnail,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+                Column (
+                    modifier = Modifier
+                        .weight(1F)
+                ) {
+                    Text(text = "이름:\t${festPlace.name}")
+                    Text(text = "개최기간:\t${festPlace.stDate.format()} ~ ${festPlace.enDate.format()}")
+                    Text(text = "주소:\t${festPlace.address}")
+                }
             }
+            val traffics = festPlace.traffics.first { it.date == selectedDate }
+
+            TrafficGradient (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                items = traffics.items,
+            )
         }
     }
 }

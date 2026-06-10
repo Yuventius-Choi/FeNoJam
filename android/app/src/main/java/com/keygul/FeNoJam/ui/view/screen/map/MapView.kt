@@ -2,6 +2,7 @@ package com.keygul.FeNoJam.ui.view.screen.map
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -162,8 +163,8 @@ fun MapView (
             }
         }
         state.selectedFestPlace?.let { place ->
-            // 상단 Date
             state.selectedDate?.let { currentDate ->
+                // 상단 Date
                 DateChips (
                     modifier = Modifier
                         .padding(horizontal = 20.dp, vertical = 8.dp)
@@ -176,16 +177,17 @@ fun MapView (
                         MapEvent.SelectDate(it)
                     )
                 }
-            }
 
-            // 하단 CardView
-            PlaceCardView (
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                festPlace = place
-            )
+                // 하단 CardView
+                PlaceCardView (
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    festPlace = place,
+                    selectedDate = currentDate
+                )
+            }
         }
         if (state.festPlaces.isEmpty()) {
             Button (
