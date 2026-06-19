@@ -41,13 +41,17 @@ services:
       SERVER_TOMCAT_MAX_HTTP_FORM_POST_SIZE: "500MB"
 
       GOV_KEY_ENCODED: ${GOV_KEY_ENCODED}
+      GOV_KEY_DECODED: ${GOV_KEY_DECODED}
 
-#  ai-server:
-#    build:
-#      context: ./ai-server
-#    container_name: ai-server
-#    restart: always
-#    ports:
-#      - ${AI_PORT}:${AI_PORT}
+  ai-server:
+    env_file:
+      - compose.env
+    build:
+      context: ./ai-server
+    container_name: ai-server
+    restart: always
+    ports:
+      - ${AI_PORT}:8000
+
 volumes:
   mariadb_data:
