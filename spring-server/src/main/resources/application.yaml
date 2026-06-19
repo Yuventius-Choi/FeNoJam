@@ -1,3 +1,21 @@
 spring:
   application:
     name: fe_no_jam
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+      file-size-threshold: 10MB
+  codec:
+    max-in-memory-size: 100MB
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    initialization-mode: always
+
+server:
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: 500MB
+    max-part-count: 1000
+  max-http-request-header-size: 10MB
