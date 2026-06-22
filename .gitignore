@@ -2,11 +2,11 @@
 mariadb_data/
 
 # AI model
-models/
-checkpoints/
-*.pth
-*.pt
-*.onnx
+#models/
+#checkpoints/
+#*.pth
+#*.pt
+#*.onnx
 
 # Firebase
 google-services.json
