@@ -14,6 +14,9 @@ services:
       - ${DB_PORT}:${DB_PORT}
     volumes:
       - mariadb_data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
 
   spring-api:
     env_file:
@@ -27,16 +30,28 @@ services:
     ports:
       - ${API_PORT}:8080
     environment:
-      SPRING_DATASOURCE_URL: ${API_DATASOURCE_URL}
+      SPRING_DATASOURCE_URL: ${API_DATASOURCE_URL}?characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_SERVLET_MULTIPART_ENABLED: "true"
+      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: "100MB"
+      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: "500MB"
 
-#  ai-server:
-#    build:
-#      context: ./ai-server
-#    container_name: ai-server
-#    restart: always
-#    ports:
-#      - ${AI_PORT}:${AI_PORT}
+      SERVER_TOMCAT_MAX_SWALLOW_SIZE: "-1"
+      SERVER_TOMCAT_MAX_HTTP_FORM_POST_SIZE: "500MB"
+
+      GOV_KEY_ENCODED: ${GOV_KEY_ENCODED}
+      GOV_KEY_DECODED: ${GOV_KEY_DECODED}
+
+  ai-server:
+    env_file:
+      - compose.env
+    build:
+      context: ./ai-server
+    container_name: ai-server
+    restart: always
+    ports:
+      - ${AI_PORT}:8000
+
 volumes:
   mariadb_data:
