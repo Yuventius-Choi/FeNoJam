@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">페노잼</string>
+    <string name="title_activity_map_view">MapView</string>
+</resources>
