@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">페노잼</string>
     <string name="title_activity_map_view">MapView</string>
+    <string name="tab_home">홈</string>
+    <string name="tab_recommend">추천</string>
+    <string name="tab_favorite">관심</string>
+    <string name="tab_more">더보기</string>
 </resources>

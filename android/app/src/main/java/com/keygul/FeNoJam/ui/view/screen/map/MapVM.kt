@@ -1,8 +1,14 @@
 package com.keygul.FeNoJam.ui.view.screen.map
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil3.BitmapImage
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import com.keygul.FeNoJam.data.model.FestPlaceDto
 import com.keygul.FeNoJam.data.model.FestPlaceMapper
 import com.keygul.FeNoJam.domain.model.FestPlace

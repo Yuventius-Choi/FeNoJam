@@ -32,7 +32,7 @@ fun PlaceCardView (
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
