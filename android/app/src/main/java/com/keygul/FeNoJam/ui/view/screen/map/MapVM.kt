@@ -1,17 +1,26 @@
 package com.keygul.FeNoJam.ui.view.screen.map
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil3.BitmapImage
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import com.keygul.FeNoJam.data.model.FestPlaceDto
 import com.keygul.FeNoJam.data.model.FestPlaceMapper
 import com.keygul.FeNoJam.domain.model.FestPlace
+import com.keygul.FeNoJam.utils.exts.getFestAsset
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import java.time.LocalDate
+import kotlin.time.Duration.Companion.milliseconds
 
 class MapVM (
     savedStateHandle: SavedStateHandle
@@ -33,7 +42,10 @@ class MapVM (
         }
     }
 
-    private fun selectPlace(festPlace: FestPlace?) = intent {
+    private fun selectPlace(festPlace: FestPlace?, delay: Long = 0L) = intent {
+        if (delay > 0L) {
+            delay(delay.milliseconds)
+        }
         reduce {
             state.copy(
                 selectedFestPlace = festPlace,
@@ -62,6 +74,6 @@ class MapVM (
             state.copy(festPlaces = result)
         }
 
-        postSideEffect(MapSideEffect.Toast(msg = "데이터 로드 완료"))
+//        postSideEffect(MapSideEffect.Toast(msg = "데이터 로드 완료"))
     }
 }

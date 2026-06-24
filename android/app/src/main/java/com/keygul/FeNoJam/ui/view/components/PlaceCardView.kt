@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -27,14 +30,24 @@ fun PlaceCardView (
     modifier: Modifier = Modifier,
     festPlace: FestPlace = FestPlace(),
     selectedDate: LocalDate = LocalDate.now(),
+    enableTraffic: Boolean = true,
+    onClick: (() -> Unit)? = null
 ) {
-    Card (
-        modifier = modifier
+    ElevatedCard (
+        modifier = modifier,
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
+        onClick = {
+            onClick?.invoke()
+        }
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row (
                 modifier = Modifier
@@ -44,7 +57,8 @@ fun PlaceCardView (
             ) {
                 AsyncImage (
                     modifier = Modifier
-                        .size(50.dp),
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(4.dp)),
                     model = festPlace.thumbnail,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -58,13 +72,16 @@ fun PlaceCardView (
                     Text(text = "주소:\t${festPlace.address}")
                 }
             }
-            val traffics = festPlace.traffics.first { it.date == selectedDate }
 
-            TrafficGradient (
-                modifier = Modifier
-                    .fillMaxWidth(),
-                items = traffics.items,
-            )
+            if (enableTraffic) {
+                val traffics = festPlace.traffics.first { it.date == selectedDate }
+
+                TrafficGradient (
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    items = traffics.items,
+                )
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ sealed class MapEvent {
     data class LoadSamples (
         val jsonString: String
     ): MapEvent()
-    data class SelectPlace(val place: FestPlace? = null): MapEvent()
+    data class SelectPlace(val place: FestPlace? = null, val delay: Long = 0L): MapEvent()
     data class SelectDate(val date: LocalDate): MapEvent()
 }
 

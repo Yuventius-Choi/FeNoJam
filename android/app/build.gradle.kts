@@ -9,18 +9,14 @@ plugins {
 
 android {
     namespace = "com.keygul.FeNoJam"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.keygul.FeNoJam"
         minSdk = 30
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 37
+        versionCode = 6
+        versionName = "0.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,6 +62,7 @@ dependencies {
     implementation(libs.bundles.orbit)
     implementation(libs.bundles.coil)
     implementation(libs.bundles.google.map)
+    implementation(libs.bundles.navigation3)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.serialization.json)
 }
