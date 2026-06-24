@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
 
                                 is MapPlaceDetailScene -> NavEntry(key) {
                                     // TODO
-                                    // 상세 화면 구현
+                                    //  축제 상세 화면 구현
                                 }
                                 else -> NavEntry(Unit) { Text("Unknown route") }
                             }
