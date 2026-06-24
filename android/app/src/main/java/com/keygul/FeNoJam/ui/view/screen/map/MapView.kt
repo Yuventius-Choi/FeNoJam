@@ -168,18 +168,19 @@ fun MapView (
                             } else {
                                 place
                             }
+                            if (selectedPlace == null) {
+                                coroutineScope.launch {
+                                    cameraPositionState.animate(
+                                        update = CameraUpdateFactory.zoomTo(
+                                            8F
+                                        ),
+                                        durationMs = 1000
+                                    )
+                                }
+                            }
                             vm.onEvent (
                                 MapEvent.SelectPlace(selectedPlace)
                             )
-                            coroutineScope.launch {
-                                cameraPositionState.animate(
-                                    update = CameraUpdateFactory.newLatLngZoom(
-                                        marker.position,
-                                        selectedPlace?.let { 14F } ?: run { 8F }
-                                    ),
-                                    durationMs = 1000
-                                )
-                            }
                             return@MarkerComposable true
                         }
                     ) {
@@ -321,6 +322,16 @@ fun MapView (
                         )
                     )
                     activatedSearchFlag = false
+                } else {
+                    coroutineScope.launch {
+                        cameraPositionState.animate(
+                            update = CameraUpdateFactory.newLatLngZoom(
+                                LatLng(place.lat, place.lng),
+                                14F
+                            ),
+                            durationMs = 1000
+                        )
+                    }
                 }
             }
         }
