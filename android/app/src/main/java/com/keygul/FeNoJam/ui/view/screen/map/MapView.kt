@@ -68,10 +68,12 @@ import com.keygul.FeNoJam.ui.view.components.PlaceCardView
 import com.keygul.FeNoJam.ui.view.scene.map.MapPlaceSearchScene
 import com.keygul.FeNoJam.ui.view.screen.map.search.MapSearchView
 import com.keygul.FeNoJam.utils.exts.getFestAsset
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import java.time.LocalDate
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun MapView (
@@ -82,8 +84,6 @@ fun MapView (
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val state by vm.collectAsState()
-
-    var isSearchViewShowing by remember { mutableStateOf(false) }
 
     val koreaBounds = LatLngBounds(
         LatLng(33.0, 124.0),
@@ -105,13 +105,14 @@ fun MapView (
         ))
     }
 
-
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
             koreaCenterPos,
             6F
         )
     }
+
+    var activatedSearchFlag by remember { mutableStateOf<Boolean>(false) }
 
     Box (
         modifier = modifier
@@ -123,14 +124,16 @@ fun MapView (
             cameraPositionState = cameraPositionState,
             uiSettings = uiSettings,
             properties = mapProperties,
-            onMapLoaded = {
-                cameraPositionState.move(
-                    CameraUpdateFactory.newLatLngBounds(
-                        koreaBounds,
-                        100
-                    )
-                )
-            }
+//            onMapLoaded = {
+//                if (state.selectedFestPlace == null) {
+//                    cameraPositionState.move(
+//                        CameraUpdateFactory.newLatLngBounds(
+//                            koreaBounds,
+//                            100
+//                        )
+//                    )
+//                }
+//            }
         ) {
             state.festPlaces.forEach { place ->
                 key(place.id) {
@@ -264,7 +267,12 @@ fun MapView (
                         .padding(12.dp)
                         .background(Color.White, RoundedCornerShape(size = 16.dp))
                         .clickable {
-                            backStack.add(MapPlaceSearchScene)
+                            activatedSearchFlag = true
+                            backStack.add (
+                                MapPlaceSearchScene (onSelectedPlace = { festPlace ->
+                                    vm.onEvent(MapEvent.SelectPlace(festPlace))
+                                })
+                            )
                         }
                         .padding(horizontal = 12.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -289,10 +297,38 @@ fun MapView (
         }
 
         LaunchedEffect(Unit) {
+            cameraPositionState.move(
+                CameraUpdateFactory.newLatLngBounds(
+                    koreaBounds,
+                    100
+                )
+            )
             if (state.festPlaces.isEmpty()) {
                 vm.onEvent (
                     MapEvent.LoadSamples(jsonString = context.getFestAsset("sample.json"))
                 )
+            }
+        }
+
+        LaunchedEffect(state.selectedFestPlace) {
+            state.selectedFestPlace?.let { place ->
+                if (!activatedSearchFlag) {
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newLatLngZoom(
+                            LatLng(place.lat, place.lng),
+                            14F
+                        ),
+                        durationMs = 1000
+                    )
+                } else {
+                    cameraPositionState.move(
+                        update = CameraUpdateFactory.newLatLngZoom(
+                            LatLng(place.lat, place.lng),
+                            14F
+                        )
+                    )
+                    activatedSearchFlag = false
+                }
             }
         }
     }

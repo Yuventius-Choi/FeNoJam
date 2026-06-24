@@ -13,12 +13,14 @@ import com.keygul.FeNoJam.data.model.FestPlaceDto
 import com.keygul.FeNoJam.data.model.FestPlaceMapper
 import com.keygul.FeNoJam.domain.model.FestPlace
 import com.keygul.FeNoJam.utils.exts.getFestAsset
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import java.time.LocalDate
+import kotlin.time.Duration.Companion.milliseconds
 
 class MapVM (
     savedStateHandle: SavedStateHandle
@@ -40,7 +42,10 @@ class MapVM (
         }
     }
 
-    private fun selectPlace(festPlace: FestPlace?) = intent {
+    private fun selectPlace(festPlace: FestPlace?, delay: Long = 0L) = intent {
+        if (delay > 0L) {
+            delay(delay.milliseconds)
+        }
         reduce {
             state.copy(
                 selectedFestPlace = festPlace,

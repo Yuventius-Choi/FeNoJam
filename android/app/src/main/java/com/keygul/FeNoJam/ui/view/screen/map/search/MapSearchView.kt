@@ -133,7 +133,13 @@ fun MapSearchView (
                         modifier = Modifier
                             .padding(horizontal = 8.dp),
                         festPlace = festPlace,
-                        enableTraffic = false
+                        enableTraffic = false,
+                        onClick = {
+                            onClick(festPlace)
+                            focusManager.clearFocus()
+                            searchText = ""
+                            onClose.invoke()
+                        }
                     )
                 }
             }
@@ -146,6 +152,7 @@ fun MapSearchView (
                 MapSearchEvent.LoadSamples(jsonString = context.getFestAsset("sample.json"))
             )
         }
+
     }
 
     LaunchedEffect(searchText) {

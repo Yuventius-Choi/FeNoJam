@@ -30,14 +30,18 @@ fun PlaceCardView (
     modifier: Modifier = Modifier,
     festPlace: FestPlace = FestPlace(),
     selectedDate: LocalDate = LocalDate.now(),
-    enableTraffic: Boolean = true
+    enableTraffic: Boolean = true,
+    onClick: (() -> Unit)? = null
 ) {
     ElevatedCard (
         modifier = modifier,
         colors = CardDefaults.elevatedCardColors(
             containerColor = Color.White,
             contentColor = Color.Black
-        )
+        ),
+        onClick = {
+            onClick?.invoke()
+        }
     ) {
         Column(
             modifier = modifier

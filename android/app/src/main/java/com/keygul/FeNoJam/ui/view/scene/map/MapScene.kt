@@ -8,5 +8,5 @@ import com.keygul.FeNoJam.domain.model.FestPlace
  * Created by Ven Choi on 2026-06-24
  */
 data object MapScene
-data object MapPlaceSearchScene
+data class MapPlaceSearchScene(val onSelectedPlace: ((FestPlace) -> Unit)? = null)
 data class MapPlaceDetailScene(val place: FestPlace)

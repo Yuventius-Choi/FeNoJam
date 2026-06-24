@@ -115,7 +115,7 @@ class MainActivity : ComponentActivity() {
                         onBack = { backStack.removeLastOrNull() },
                         entryProvider = { key ->
                             when (key) {
-                                MapScene -> NavEntry(key) {
+                                is MapScene -> NavEntry(key) {
                                     MapView(
                                         modifier = Modifier
                                             .fillMaxSize(),
@@ -123,10 +123,13 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
 
-                                MapPlaceSearchScene -> NavEntry(key) {
+                                is MapPlaceSearchScene -> NavEntry(key) {
                                     MapSearchView(
                                         modifier = Modifier
                                             .fillMaxSize(),
+                                        onClick = { festPlace ->
+                                            key.onSelectedPlace?.invoke(festPlace)
+                                        },
                                         onClose = { backStack.removeLastOrNull() }
                                     )
                                 }
