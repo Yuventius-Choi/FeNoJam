@@ -2,6 +2,7 @@ package com.keygul.FeNoJam.ui.view.screen.map
 
 import android.graphics.Bitmap
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -312,15 +313,7 @@ fun MapView (
 
         LaunchedEffect(state.selectedFestPlace) {
             state.selectedFestPlace?.let { place ->
-                if (!activatedSearchFlag) {
-                    cameraPositionState.animate(
-                        update = CameraUpdateFactory.newLatLngZoom(
-                            LatLng(place.lat, place.lng),
-                            14F
-                        ),
-                        durationMs = 1000
-                    )
-                } else {
+                if (activatedSearchFlag) {
                     cameraPositionState.move(
                         update = CameraUpdateFactory.newLatLngZoom(
                             LatLng(place.lat, place.lng),
@@ -330,6 +323,20 @@ fun MapView (
                     activatedSearchFlag = false
                 }
             }
+        }
+    }
+
+    BackHandler (
+        enabled = state.selectedFestPlace != null
+    ) {
+        vm.onEvent(MapEvent.SelectPlace(null))
+        coroutineScope.launch {
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.zoomTo(
+                    8F
+                ),
+                durationMs = 1000
+            )
         }
     }
 
