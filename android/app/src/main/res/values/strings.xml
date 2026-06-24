@@ -6,4 +6,6 @@
     <string name="tab_favorite">관심</string>
     <string name="tab_more">더보기</string>
     <string name="txt_search">검색</string>
+    <string name="txt_hint_festival_search">축제명을 검색해보세요</string>
+    <string name="txt_festival_search_not_exist">축제를 찾지 못했어요</string>
 </resources>

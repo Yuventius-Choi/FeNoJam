@@ -69,6 +69,6 @@ class MapVM (
             state.copy(festPlaces = result)
         }
 
-        postSideEffect(MapSideEffect.Toast(msg = "데이터 로드 완료"))
+//        postSideEffect(MapSideEffect.Toast(msg = "데이터 로드 완료"))
     }
 }
