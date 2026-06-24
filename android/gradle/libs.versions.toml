@@ -1,24 +1,27 @@
 [versions]
 agp = "9.2.1"
-coreKtx = "1.18.0"
+coreKtx = "1.19.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-lifecycleRuntimeKtx = "2.10.0"
+lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.13.0"
-kotlin = "2.3.21"
-composeBom = "2026.05.01"
-gms = "4.4.4"
-firebaseBom = "34.14.0"
+kotlin = "2.4.0"
+composeBom = "2026.06.00"
+gms = "4.5.0"
+firebaseBom = "34.15.0"
 crashlytics = "3.0.7"
 orbit = "11.0.0"
 secretsGradlePlugin = "2.0.1"
 googleMaps = "8.3.0"
-coil = "3.4.0"
-viewmodelCompose = "2.10.0"
-serializationPlugin = "2.3.21"
+coil = "3.5.0"
+viewmodelCompose = "2.11.0"
+serializationPlugin = "2.4.0"
 serialization = "1.11.0"
-androidMapUtils = "3.8.0"
+androidMapUtils = "4.5.0"
+navigation3 = "1.1.3"
+lifecycleVMNav3 = "2.11.0"
+materialAdpativeNav3 = "1.3.0-rc01"
 
 [libraries]
 # DEFAULT
@@ -66,11 +69,18 @@ orbit-test = { group = "org.orbit-mvi", name = "orbit-test", version.ref = "orbi
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 
+## navigtaion3 - https://developer.android.com/guide/navigation/navigation-3/get-started?hl=ko
+androidx-navigation-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+androidx-navigation-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
+androidx-viewmodel-navigation = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleVMNav3" }
+androidx-material3-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "materialAdpativeNav3" }
+
 [bundles]
 firebase = [ "firebase-analytics", "firebase-crashlytics" ]
 orbit = [ "orbit-core", "orbit-viewmodel", "orbit-compose", "orbit-test" ]
 coil = [ "coil", "coil-network" ]
 google-map = [ "google-maps", "android-map-utils" ]
+navigation3 = [ "androidx-navigation-runtime", "androidx-navigation-ui", "androidx-viewmodel-navigation", "androidx-material3-navigation" ]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

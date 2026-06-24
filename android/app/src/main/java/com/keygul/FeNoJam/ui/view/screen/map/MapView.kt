@@ -1,28 +1,31 @@
 package com.keygul.FeNoJam.ui.view.screen.map
 
 import android.graphics.Bitmap
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,13 +35,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.BitmapImage
-import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
 import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
@@ -50,7 +54,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.TileOverlay
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -62,8 +65,9 @@ import com.keygul.FeNoJam.domain.model.FestPlace
 import com.keygul.FeNoJam.domain.model.FestWeightDaily
 import com.keygul.FeNoJam.ui.view.components.DateChips
 import com.keygul.FeNoJam.ui.view.components.PlaceCardView
+import com.keygul.FeNoJam.ui.view.scene.map.MapPlaceSearchScene
+import com.keygul.FeNoJam.ui.view.screen.map.search.MapSearchView
 import com.keygul.FeNoJam.utils.exts.getFestAsset
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -72,11 +76,14 @@ import java.time.LocalDate
 @Composable
 fun MapView (
     modifier: Modifier = Modifier,
+    backStack: SnapshotStateList<Any>,
     vm: MapVM = viewModel()
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val state by vm.collectAsState()
+
+    var isSearchViewShowing by remember { mutableStateOf(false) }
 
     val koreaBounds = LatLngBounds(
         LatLng(33.0, 124.0),
@@ -249,12 +256,44 @@ fun MapView (
                     selectedDate = currentDate
                 )
             }
+        } ?: run {
+            if (state.festPlaces.isNotEmpty()) {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp)
+                        .background(Color.White, RoundedCornerShape(size = 16.dp))
+                        .clickable {
+                            backStack.add(MapPlaceSearchScene)
+                        }
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    val contentColor = Color.LightGray
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_search),
+                        contentDescription = null,
+                        tint = contentColor
+                    )
+                    Text (
+                        modifier = Modifier.
+                        weight(1F),
+                        text = stringResource(R.string.txt_search),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
 
-        LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-            vm.onEvent (
-                MapEvent.LoadSamples(jsonString = context.getFestAsset("sample.json"))
-            )
+        LaunchedEffect(Unit) {
+            if (state.festPlaces.isEmpty()) {
+                vm.onEvent (
+                    MapEvent.LoadSamples(jsonString = context.getFestAsset("sample.json"))
+                )
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import coil3.request.allowHardware
 import com.keygul.FeNoJam.data.model.FestPlaceDto
 import com.keygul.FeNoJam.data.model.FestPlaceMapper
 import com.keygul.FeNoJam.domain.model.FestPlace
+import com.keygul.FeNoJam.utils.exts.getFestAsset
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.Container
