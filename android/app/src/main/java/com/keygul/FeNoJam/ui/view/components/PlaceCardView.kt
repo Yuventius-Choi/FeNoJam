@@ -47,8 +47,8 @@ fun PlaceCardView (
     ElevatedCard (
         modifier = modifier,
         colors = CardDefaults.elevatedCardColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
+            containerColor = Color.DarkGray,
+            contentColor = Color.White
         ),
         onClick = {
             onClick?.invoke()
@@ -99,7 +99,7 @@ fun PlaceCardView (
                         text = "${festPlace.stDate.format(Patterns.MM_DD_KR)} ~ ${festPlace.enDate.format(Patterns.MM_DD_KR)}",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Thin,
-                        color = Color.DarkGray
+                        color = Color.LightGray
                     )
                     Text (
                         modifier = Modifier
