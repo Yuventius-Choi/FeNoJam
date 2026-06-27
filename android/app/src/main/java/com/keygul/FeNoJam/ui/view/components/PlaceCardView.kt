@@ -1,6 +1,7 @@
 package com.keygul.FeNoJam.ui.view.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.keygul.FeNoJam.R
 import com.keygul.FeNoJam.domain.model.FestPlace
+import com.keygul.FeNoJam.utils.Patterns
 import com.keygul.FeNoJam.utils.exts.format
 import java.time.LocalDate
 
@@ -55,18 +58,18 @@ fun PlaceCardView (
             modifier = modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row (
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Top
             ) {
                 if (festPlace.thumbnail.isNullOrBlank()) {
                     Image (
                         modifier = Modifier
-                            .size(50.dp)
+                            .size(70.dp)
                             .clip(RoundedCornerShape(4.dp))
                             .border(width = 1.dp, color = colorResource(R.color.main), shape = RoundedCornerShape(4.dp)),
                         painter = painterResource(R.drawable.logo),
@@ -75,8 +78,9 @@ fun PlaceCardView (
                 } else {
                     AsyncImage (
                         modifier = Modifier
-                            .size(50.dp)
-                            .clip(RoundedCornerShape(4.dp)),
+                            .size(70.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .border(width = 1.dp, color = colorResource(R.color.main), shape = RoundedCornerShape(4.dp)),
                         model = festPlace.thumbnail,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
@@ -84,11 +88,25 @@ fun PlaceCardView (
                 }
                 Column (
                     modifier = Modifier
-                        .weight(1F)
+                        .weight(1F),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Text(text = "이름:\t${festPlace.name}")
-                    Text(text = "개최기간:\t${festPlace.stDate.format()} ~ ${festPlace.enDate.format()}")
-                    Text(text = "주소:\t${festPlace.address}")
+                    Text (
+                        text = festPlace.name,
+                        fontWeight = FontWeight.Black
+                    )
+                    Text (
+                        text = "${festPlace.stDate.format(Patterns.MM_DD_KR)} ~ ${festPlace.enDate.format(Patterns.MM_DD_KR)}",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Thin,
+                        color = Color.DarkGray
+                    )
+                    Text (
+                        modifier = Modifier
+                            .padding(top = 4.dp),
+                        text = festPlace.address,
+                        fontSize = 14.sp
+                    )
                 }
                 if (selectedDate != null) {
                     val festWeight = festPlace.weights.first { it.date == selectedDate }.weight
@@ -108,17 +126,25 @@ fun PlaceCardView (
 
                     Text (
                         modifier = Modifier
+                            .background(confusionColor, RoundedCornerShape(4.dp))
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
                             .align(Alignment.Top),
                         text = confusionText,
-                        color = confusionColor,
+                        color = Color.White,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Black
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
 
             if (enableTraffic) {
                 val traffics = festPlace.traffics.first { it.date == selectedDate }
+
+                Text (
+                    text = stringResource(R.string.txt_predict_traffic),
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
+                )
 
                 TrafficGradient (
                     modifier = Modifier

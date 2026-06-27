@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.keygul.FeNoJam.R
 import com.keygul.FeNoJam.domain.model.FestTrafficItem
 import com.keygul.FeNoJam.utils.Weights
@@ -54,17 +55,32 @@ fun TrafficGradient (
         ) {
             Text (
                 text = stringResource(R.string.txt_hour_0),
-                color = Color.White
+                color = Color.White,
+                fontSize = 10.sp
+            )
+            Spacer(Modifier.weight(1F))
+            Text (
+                text = stringResource(R.string.txt_hour_6),
+                color = Color.White,
+                fontSize = 10.sp
             )
             Spacer(Modifier.weight(1F))
             Text (
                 text = stringResource(R.string.txt_hour_12),
-                color = Color.White
+                color = Color.White,
+                fontSize = 10.sp
+            )
+            Spacer(Modifier.weight(1F))
+            Text (
+                text = stringResource(R.string.txt_hour_18),
+                color = Color.White,
+                fontSize = 10.sp
             )
             Spacer(Modifier.weight(1F))
             Text (
                 text = stringResource(R.string.txt_hour_23),
-                color = Color.White
+                color = Color.White,
+                fontSize = 10.sp
             )
         }
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.keygul.FeNoJam.utils.exts.format
+import com.keygul.FeNoJam.utils.exts.noRippleClickable
 import java.time.LocalDate
 
 @Composable
@@ -45,7 +46,7 @@ fun DateChip (
 ) {
     Surface(
         modifier = modifier
-            .clickable {
+            .noRippleClickable {
                 onChipClicked(item)
             },
         shape = RoundedCornerShape(100.dp),
