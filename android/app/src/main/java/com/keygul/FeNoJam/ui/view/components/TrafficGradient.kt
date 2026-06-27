@@ -18,13 +18,13 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.keygul.FeNoJam.R
 import com.keygul.FeNoJam.domain.model.FestTrafficItem
-import com.keygul.FeNoJam.utils.Weights
-import com.keygul.FeNoJam.utils.getWeightColor
 
 @Composable
 fun TrafficGradient (
@@ -55,32 +55,37 @@ fun TrafficGradient (
         ) {
             Text (
                 text = stringResource(R.string.txt_hour_0),
-                color = Color.White,
-                fontSize = 10.sp
+                color = Color.Black,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black
             )
             Spacer(Modifier.weight(1F))
             Text (
                 text = stringResource(R.string.txt_hour_6),
-                color = Color.White,
-                fontSize = 10.sp
+                color = Color.Black,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black
             )
             Spacer(Modifier.weight(1F))
             Text (
                 text = stringResource(R.string.txt_hour_12),
-                color = Color.White,
-                fontSize = 10.sp
+                color = Color.Black,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black
             )
             Spacer(Modifier.weight(1F))
             Text (
                 text = stringResource(R.string.txt_hour_18),
-                color = Color.White,
-                fontSize = 10.sp
+                color = Color.Black,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black
             )
             Spacer(Modifier.weight(1F))
             Text (
                 text = stringResource(R.string.txt_hour_23),
-                color = Color.White,
-                fontSize = 10.sp
+                color = Color.Black,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black
             )
         }
 
@@ -89,26 +94,62 @@ fun TrafficGradient (
 
 @Composable
 fun trafficColor(weight: Double): Color {
+
     return when {
-        // 1단계: 0.0 ~ 0.25 (SMOOTH -> NORMAL)
-        weight < 0.25 -> lerp(
-            getWeightColor(Weights.SMOOTH),
-            getWeightColor(Weights.NORMAL),
-            (weight * 4).toFloat()
+        weight < 0.1 -> lerp(
+            colorResource(R.color.traffic_color_1),
+            colorResource(R.color.traffic_color_2),
+            (weight / 0.1).toFloat()
         )
-        // 2단계: 0.25 ~ 0.5 (NORMAL -> CAUTION)
+
+        weight < 0.2 -> lerp(
+            colorResource(R.color.traffic_color_2),
+            colorResource(R.color.traffic_color_3),
+            ((weight - 0.1) / 0.1).toFloat()
+        )
+
+        weight < 0.3 -> lerp(
+            colorResource(R.color.traffic_color_3),
+            colorResource(R.color.traffic_color_4),
+            ((weight - 0.2) / 0.1).toFloat()
+        )
+
+        weight < 0.4 -> lerp(
+            colorResource(R.color.traffic_color_4),
+            colorResource(R.color.traffic_color_5),
+            ((weight - 0.3) / 0.1).toFloat()
+        )
+
         weight < 0.5 -> lerp(
-            getWeightColor(Weights.NORMAL),
-            getWeightColor(Weights.CAUTION),
-            ((weight - 0.25) * 4).toFloat()
+            colorResource(R.color.traffic_color_5),
+            colorResource(R.color.traffic_color_6),
+            ((weight - 0.4) / 0.1).toFloat()
         )
-        // 3단계: 0.5 ~ 0.75 (CAUTION -> CONFUSION)
-        weight < 0.75 -> lerp(
-            getWeightColor(Weights.CAUTION),
-            getWeightColor(Weights.CONFUSION),
-            ((weight - 0.5) * 4).toFloat()
+
+        weight < 0.6 -> lerp(
+            colorResource(R.color.traffic_color_6),
+            colorResource(R.color.traffic_color_7),
+            ((weight - 0.5) / 0.1).toFloat()
         )
-        // 0.75 ~ 1.0 (CONFUSION 고정)
-        else -> getWeightColor(Weights.CONFUSION)
+
+        weight < 0.7 -> lerp(
+            colorResource(R.color.traffic_color_7),
+            colorResource(R.color.traffic_color_8),
+            ((weight - 0.6) / 0.1).toFloat()
+        )
+
+        weight < 0.8 -> lerp(
+            colorResource(R.color.traffic_color_8),
+            colorResource(R.color.traffic_color_9),
+            ((weight - 0.7) / 0.1).toFloat()
+        )
+
+        weight < 0.9 -> lerp(
+            colorResource(R.color.traffic_color_9),
+            colorResource(R.color.traffic_color_10),
+            ((weight - 0.8) / 0.1).toFloat()
+        )
+
+        else -> colorResource(R.color.traffic_color_10)
     }
 }
