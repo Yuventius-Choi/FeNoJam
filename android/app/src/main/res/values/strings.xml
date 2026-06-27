@@ -8,4 +8,14 @@
     <string name="txt_search">검색</string>
     <string name="txt_hint_festival_search">축제명을 검색해보세요</string>
     <string name="txt_festival_search_not_exist">축제를 찾지 못했어요</string>
+    <string name="txt_hour_0">0시</string>
+    <string name="txt_hour_6">6시</string>
+    <string name="txt_hour_12">12시</string>
+    <string name="txt_hour_18">18시</string>
+    <string name="txt_hour_23">23시</string>
+    <string name="txt_predict_traffic">예상 교통 혼잡도</string>
+    <string name="txt_smooth">여유</string>
+    <string name="txt_normal">보통</string>
+    <string name="txt_caution">주의</string>
+    <string name="txt_confusion">혼잡</string>
 </resources>

@@ -69,6 +69,7 @@ import com.keygul.FeNoJam.ui.view.components.PlaceCardView
 import com.keygul.FeNoJam.ui.view.scene.map.MapPlaceSearchScene
 import com.keygul.FeNoJam.ui.view.screen.map.search.MapSearchView
 import com.keygul.FeNoJam.utils.exts.getFestAsset
+import com.keygul.FeNoJam.utils.exts.noRippleClickable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -201,11 +202,13 @@ fun MapView (
                                     contentScale = ContentScale.Crop,
                                 )
                             } else {
-                                Box(
+                                Image(
                                     modifier = Modifier
                                         .size(34.dp)
-                                        .clip(CircleShape)
-                                        .background(Color.LightGray)
+                                        .clip(CircleShape),
+                                    painter = painterResource(R.drawable.logo),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
                                 )
                             }
                         }
@@ -268,7 +271,7 @@ fun MapView (
                         .fillMaxWidth()
                         .padding(12.dp)
                         .background(Color.White, RoundedCornerShape(size = 16.dp))
-                        .clickable {
+                        .noRippleClickable {
                             activatedSearchFlag = true
                             backStack.add (
                                 MapPlaceSearchScene (onSelectedPlace = { festPlace ->
