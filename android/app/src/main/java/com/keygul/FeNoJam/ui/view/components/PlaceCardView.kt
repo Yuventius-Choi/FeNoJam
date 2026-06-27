@@ -1,5 +1,7 @@
 package com.keygul.FeNoJam.ui.view.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,8 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.keygul.FeNoJam.R
 import com.keygul.FeNoJam.domain.model.FestPlace
 import com.keygul.FeNoJam.utils.exts.format
 import java.time.LocalDate
@@ -55,14 +63,25 @@ fun PlaceCardView (
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                AsyncImage (
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(RoundedCornerShape(4.dp)),
-                    model = festPlace.thumbnail,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
+                if (festPlace.thumbnail.isNullOrBlank()) {
+                    Image (
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .border(width = 1.dp, color = colorResource(R.color.main), shape = RoundedCornerShape(4.dp)),
+                        painter = painterResource(R.drawable.logo),
+                        contentDescription = null,
+                    )
+                } else {
+                    AsyncImage (
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(4.dp)),
+                        model = festPlace.thumbnail,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
+                }
                 Column (
                     modifier = Modifier
                         .weight(1F)
@@ -71,6 +90,30 @@ fun PlaceCardView (
                     Text(text = "개최기간:\t${festPlace.stDate.format()} ~ ${festPlace.enDate.format()}")
                     Text(text = "주소:\t${festPlace.address}")
                 }
+
+                val festWeight = festPlace.weights.first { it.date == selectedDate }.weight
+                val confusionText = when (festWeight) {
+                    in 0.0..0.25 -> stringResource(R.string.txt_smooth)
+                    in 0.25..0.5 -> stringResource(R.string.txt_normal)
+                    in 0.5..0.75 -> stringResource(R.string.txt_caution)
+                    else -> stringResource(R.string.txt_confusion)
+                }
+
+                val confusionColor = when (festWeight) {
+                    in 0.0..0.25 -> colorResource(R.color.txt_color_green)
+                    in 0.25..0.5 -> colorResource(R.color.txt_color_blue)
+                    in 0.5..0.75 -> colorResource(R.color.txt_color_yellow)
+                    else -> colorResource(R.color.txt_color_red)
+                }
+
+                Text (
+                    modifier = Modifier
+                        .align(Alignment.Top),
+                    text = confusionText,
+                    color = confusionColor,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Black
+                )
             }
 
             if (enableTraffic) {

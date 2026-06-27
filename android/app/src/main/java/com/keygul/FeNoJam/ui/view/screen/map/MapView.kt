@@ -201,11 +201,13 @@ fun MapView (
                                     contentScale = ContentScale.Crop,
                                 )
                             } else {
-                                Box(
+                                Image(
                                     modifier = Modifier
                                         .size(34.dp)
-                                        .clip(CircleShape)
-                                        .background(Color.LightGray)
+                                        .clip(CircleShape),
+                                    painter = painterResource(R.drawable.logo),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
                                 )
                             }
                         }
