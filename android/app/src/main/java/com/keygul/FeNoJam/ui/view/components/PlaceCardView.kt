@@ -37,7 +37,7 @@ import java.time.LocalDate
 fun PlaceCardView (
     modifier: Modifier = Modifier,
     festPlace: FestPlace = FestPlace(),
-    selectedDate: LocalDate = LocalDate.now(),
+    selectedDate: LocalDate? = null,
     enableTraffic: Boolean = true,
     onClick: (() -> Unit)? = null
 ) {
@@ -90,30 +90,31 @@ fun PlaceCardView (
                     Text(text = "개최기간:\t${festPlace.stDate.format()} ~ ${festPlace.enDate.format()}")
                     Text(text = "주소:\t${festPlace.address}")
                 }
+                if (selectedDate != null) {
+                    val festWeight = festPlace.weights.first { it.date == selectedDate }.weight
+                    val confusionText = when (festWeight) {
+                        in 0.0..0.25 -> stringResource(R.string.txt_smooth)
+                        in 0.25..0.5 -> stringResource(R.string.txt_normal)
+                        in 0.5..0.75 -> stringResource(R.string.txt_caution)
+                        else -> stringResource(R.string.txt_confusion)
+                    }
 
-                val festWeight = festPlace.weights.first { it.date == selectedDate }.weight
-                val confusionText = when (festWeight) {
-                    in 0.0..0.25 -> stringResource(R.string.txt_smooth)
-                    in 0.25..0.5 -> stringResource(R.string.txt_normal)
-                    in 0.5..0.75 -> stringResource(R.string.txt_caution)
-                    else -> stringResource(R.string.txt_confusion)
+                    val confusionColor = when (festWeight) {
+                        in 0.0..0.25 -> colorResource(R.color.txt_color_green)
+                        in 0.25..0.5 -> colorResource(R.color.txt_color_blue)
+                        in 0.5..0.75 -> colorResource(R.color.txt_color_yellow)
+                        else -> colorResource(R.color.txt_color_red)
+                    }
+
+                    Text (
+                        modifier = Modifier
+                            .align(Alignment.Top),
+                        text = confusionText,
+                        color = confusionColor,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Black
+                    )
                 }
-
-                val confusionColor = when (festWeight) {
-                    in 0.0..0.25 -> colorResource(R.color.txt_color_green)
-                    in 0.25..0.5 -> colorResource(R.color.txt_color_blue)
-                    in 0.5..0.75 -> colorResource(R.color.txt_color_yellow)
-                    else -> colorResource(R.color.txt_color_red)
-                }
-
-                Text (
-                    modifier = Modifier
-                        .align(Alignment.Top),
-                    text = confusionText,
-                    color = confusionColor,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Black
-                )
             }
 
             if (enableTraffic) {
